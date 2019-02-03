@@ -2,12 +2,18 @@ package com.zilker.beans;
 
 public class User {
 	
-	String fname, email, password, occupation, address, area, role;
+	String fname, email, password, occupation, address, area, role, lname;
 	long phoneno;
 	int zipcode, id, requestpay;
 	
 	
 	
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
 	public int getRequestpay() {
 		return requestpay;
 	}

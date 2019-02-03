@@ -16,15 +16,15 @@ public class RentalValidation {
 	/*
 	 * This method is used to validate email
 	 */
-	public int validEmail(String email)
+	public boolean validateEmail(String email)
 	{
-		int counter = 0;
+		boolean counter = false;
 		Pattern pattern = Pattern.compile(RegexConstant.EMAIL);
 		Matcher matcher = pattern.matcher(email);
 		if(matcher.matches()==true)
 		{
 			email = String.valueOf(email);
-			counter = 1;
+			counter = true;
 		}
 		else
 			logger.log(Level.INFO,"Invalid email");
@@ -33,15 +33,15 @@ public class RentalValidation {
 	/*
 	 * This method is used to validate phone number
 	 */
-	public int validPhoneno(Long phoneno)
+	public boolean validatePhoneno(Long phoneno)
 	{
-		int counter = 0;
+		boolean counter = false;
 		Pattern pattern = Pattern.compile(RegexConstant.PHONE_NO);
 		Matcher matcher = pattern.matcher(String.valueOf(phoneno));
 		if(matcher.matches()==true)
 		{
 			phoneno = phoneno;
-			counter = 1;
+			counter = true;
 
 		}
 		else

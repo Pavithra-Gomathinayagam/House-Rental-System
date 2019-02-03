@@ -2,14 +2,68 @@ package com.zilker.beans;
 
 public class Rental {
 	
-	String housetype,rentchoice, rentarea, rentaddress, email,facility, newrentaddress,review, status;
-	int price, zipcode, rating, houseid, reqpay, userid;
+	String housetype,rentchoice, rentarea, rentaddress, email,facility, newrentaddress,review, status, landmark, pgSharing, gender, fname;
+	int price, zipcode, houseid, reqpay, userid, builtSqFeet, totalFloor, floorNo, deposit, statusId;
 	double latitude, longitude;
 	long phoneno;
+	float rating;
 	
 	
 	
-	
+	public int getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
+	}
+	public String getPgSharing() {
+		return pgSharing;
+	}
+	public void setPgSharing(String pgSharing) {
+		this.pgSharing = pgSharing;
+	}
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getLandmark() {
+		return landmark;
+	}
+	public void setLandmark(String landmark) {
+		this.landmark = landmark;
+	}
+	public int getBuiltSqFeet() {
+		return builtSqFeet;
+	}
+	public void setBuiltSqFeet(int builtSqFeet) {
+		this.builtSqFeet = builtSqFeet;
+	}
+	public int getTotalFloor() {
+		return totalFloor;
+	}
+	public void setTotalFloor(int totalFloor) {
+		this.totalFloor = totalFloor;
+	}
+	public int getFloorNo() {
+		return floorNo;
+	}
+	public void setFloorNo(int floorNo) {
+		this.floorNo = floorNo;
+	}
+	public int getDeposit() {
+		return deposit;
+	}
+	public void setDeposit(int deposit) {
+		this.deposit = deposit;
+	}
 	public String getStatus() {
 		return status;
 	}
@@ -46,10 +100,10 @@ public class Rental {
 	public void setReview(String review) {
 		this.review = review;
 	}
-	public int getRating() {
+	public float getRating() {
 		return rating;
 	}
-	public void setRating(int rating) {
+	public void setRating(float rating) {
 		this.rating = rating;
 	}
 	public String getNewrentaddress() {
