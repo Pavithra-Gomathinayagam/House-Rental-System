@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.zilker.beans.Rental;
+import com.zilker.constant.SqlConstant;
 import com.zilker.utils.DBUtils;
 
 public class AdminDAO {
@@ -21,7 +22,7 @@ public class AdminDAO {
 		try {
 			
 			connection = DBUtils.getConnection();
-			prepareStatement = connection.prepareStatement("SELECT DISTINCT RENTAL_DETAILS.HOUSE_ID,ADDRESS.ADDRESS,AREA.AREA,AREA.ZIPCODE FROM RENTAL_DETAILS,ADDRESS,AREA WHERE RENTAL_DETAILS.ADDRESS_ID = ADDRESS.ADDRESS_ID AND ADDRESS.AREA_ID = AREA.AREA_ID AND STATUS_ID = 1");
+			prepareStatement = connection.prepareStatement(SqlConstant.DISPLAY_REQUESTED_HOUSE);
 			resultSet = prepareStatement.executeQuery();
 			while(resultSet.next())
 			{
@@ -48,7 +49,7 @@ public class AdminDAO {
 	{
 		try {
 			connection = DBUtils.getConnection();
-			prepareStatement = connection.prepareStatement("UPDATE RENTAL_DETAILS SET STATUS_ID = ? WHERE HOUSE_ID = ?");
+			prepareStatement = connection.prepareStatement(SqlConstant.UPDATE_HOUSE_STATUS);
 			prepareStatement.setInt(1, rental.getStatusId());
 			prepareStatement.setInt(2, rental.getHouseid());
 			prepareStatement.executeUpdate();

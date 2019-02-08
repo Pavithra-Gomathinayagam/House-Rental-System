@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 /*
  * This class displays the set of operations 
- * to be performed by the owner or tenant
+ * to be performed by the owner, tenant, admin
  * for the rental system.
  */
 public class RentalImpl {
@@ -19,9 +19,6 @@ public class RentalImpl {
 
 			do {
 				logger.log(Level.INFO, "\nENTER THE CHOICE \n1.NEW USER?REGISTER \n2.EXISTING USER?LOGIN \n3.EXIT");
-				/*logger.log(Level.INFO, "1.New User?Register");
-				logger.log(Level.INFO, "2.Existing User?Login");
-				logger.log(Level.INFO, "3.Exit");*/
 
 				int choice = scanner.nextInt();
 				RentalUI rentalUi = new RentalUI();
@@ -33,15 +30,10 @@ public class RentalImpl {
 
 				case 2:
 					String role = rentalUi.login();
-					//if (role.equals("TENANT")) {
 					if (role.equals("ADMIN")) {
 						boolean loopVariable = true;
 						do {
 							logger.log(Level.INFO, "\nENTER THE CHOICE \n1.VIEW REQUESTED HOUSE \n2.EXIT");
-							/*logger.log(Level.INFO, "Enter the choice");
-							logger.log(Level.INFO, "1.View requested House");
-							logger.log(Level.INFO, "2.Exit");*/
-							
 							int adminChoice = scanner.nextInt();
 
 							switch (adminChoice) {
@@ -59,7 +51,7 @@ public class RentalImpl {
 						boolean loopVariable = true;
 						do {
 
-							logger.log(Level.INFO, "ENTER THE CHOICE \n1.SEARCH \n2.ADD REVIEWS AND RATINGS  \n3.VIEW STATUS \n4.VIEW APPROVED HOUSE \n5.LIST YOUR PROPERTY \n6.Exit");
+							logger.log(Level.INFO, "ENTER THE CHOICE \n1.SEARCH \n2.ADD REVIEWS AND RATINGS  \n3.VIEW STATUS \n4.VIEW APPROVED HOUSE \n5.PROPERTY DETAILS \n6.Exit");
 
 							int customerChoice = scanner.nextInt();
 
@@ -86,13 +78,6 @@ public class RentalImpl {
 								do {
 									logger.log(Level.INFO, "ENTER THE CHOICE \n1.ADD RENTAL DETAILS \n2.UPDATE RENTAL DETAILS  \n3.VIEW STATUS \n4.VIEW INTERESTED CUSTOMER \n5.VIEW CONFORMED HOUSE \n6.VIEW REJECTED HOUSE \n7.EXIT");
 									
-									/*logger.log(Level.INFO, "Enter the choice");
-									logger.log(Level.INFO, "1.Add rental house details");
-									logger.log(Level.INFO, "2.Update rental house details");
-									logger.log(Level.INFO, "3.View status");
-									logger.log(Level.INFO, "4.View interested customer");
-									logger.log(Level.INFO, "5.View conformed customer");
-									logger.log(Level.INFO, "6.Exit");*/
 
 									int ownerChoice = scanner.nextInt();
 

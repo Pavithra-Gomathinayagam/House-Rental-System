@@ -26,21 +26,8 @@ public class CustomerDAO {
 		try {
 		
 			connection = DBUtils.getConnection();
+			
 			/*
-			 * ROLE
-			 
-			int roleId = 0;
-			prepareStatement = connection.prepareStatement(SqlConstant.SELECT_ROLE);
-			prepareStatement.setString(1, user.getRole());
-			resultSet = prepareStatement.executeQuery();
-			if(resultSet.next())
-				if(resultSet.getString(2).equalsIgnoreCase(user.getRole()))
-				{
-					String id = resultSet.getString(1);
-					roleId = Integer.parseInt(id);
-				}
-			
-			
 			 * AREA
 			 */
 			int areaId = 0;
@@ -52,14 +39,13 @@ public class CustomerDAO {
 				String id = resultSet.getString(1);
 				areaId = Integer.parseInt(id);
 			}
-			System.out.println(areaId);
+		
 			prepareStatement = connection.prepareStatement(SqlConstant.INSERT_USER_ADDRESS);
 			prepareStatement.setString(1, user.getAddress());
 			prepareStatement.setInt(2, areaId);
 			prepareStatement.setString(3, user.getFname());
 			prepareStatement.setString(4, user.getFname());
 			prepareStatement.executeUpdate();
-			//logger.log(Level.INFO, "Number of rows affected: " + counter);
 			
 			/*
 			 * ADDRESS
@@ -88,10 +74,7 @@ public class CustomerDAO {
 			prepareStatement.setString(9, user.getFname());
 			prepareStatement.setString(10, user.getLname());
 			
-			
-			
 			prepareStatement.executeUpdate();
-			//logger.log(Level.INFO, "Number of rows affected: " + count);
 			
 			
 		}catch(SQLException e)
@@ -158,7 +141,7 @@ public class CustomerDAO {
 		try {
 			connection = DBUtils.getConnection();
 			
-			prepareStatement = connection.prepareStatement("SELECT DISTINCT RENTAL_DETAILS.HOUSE_ID,ADDRESS.ADDRESS,AREA.AREA,AREA.ZIPCODE,HOUSE_TYPE.TYPE,RENTAL_DETAILS.PRICE FROM USER,HOUSE_TYPE,RENTAL_DETAILS,ADDRESS,AREA,RENTAL_OPTION,RENTAL_STATUS WHERE AREA = ? AND AREA.AREA_ID = ADDRESS.AREA_ID AND ADDRESS.ADDRESS_ID = RENTAL_DETAILS.ADDRESS_ID AND RENTAL_DETAILS.TYPE_ID=HOUSE_TYPE.TYPE_ID AND RENTAL_OPTION.RENTAL_CHOICE = ? AND RENTAL_OPTION.CHOICE_ID = RENTAL_DETAILS.CHOICE_ID AND RENTAL_DETAILS.STATUS_ID = 2 AND USER.EMAIL = ? AND USER.USER_ID != RENTAL_DETAILS.USER_ID");
+			prepareStatement = connection.prepareStatement(SqlConstant.SEARCH);
 			prepareStatement.setString(1, rental.getRentarea());
 			prepareStatement.setString(2, rental.getRentchoice());
 			prepareStatement.setString(3, rental.getEmail());
@@ -168,22 +151,21 @@ public class CustomerDAO {
 			while(resultSet.next())
 			{
 				int flag = 0;
-				//System.out.println(resultSet.getInt(1));
 				houseId = resultSet.getInt(1);
-				prepareStatement0 = connection.prepareStatement("SELECT HOUSE_ID FROM USER_RENTAL_INTEREST WHERE USER_RENTAL_INTEREST.HOUSE_ID = ?");
+				prepareStatement0 = connection.prepareStatement(SqlConstant.INTEREST_HOUSE_ID);
 				prepareStatement0.setInt(1, houseId);
 				resultSet0 = prepareStatement0.executeQuery();
 				int id = 0;
-				//System.out.println(resultSet.getInt(1));
+				
 				while(resultSet0.next())
 				{
 					id = resultSet0.getInt(1);
-					//System.out.println(resultSet0.getInt(1));
+					
 				}
 				if(id !=0)
 				{
-					//System.out.println(resultSet.getInt(1));
-					prepareStatement2 = connection.prepareStatement("SELECT HOUSE_ID FROM USER_RENTAL_INTEREST WHERE HOUSE_ID = ? AND USER_RENTAL_INTEREST.STATUS_ID =4");
+					
+					prepareStatement2 = connection.prepareStatement(SqlConstant.GET_INTEREST_HOUSE_ID);
 					prepareStatement2.setInt(1, houseId);
 					resultSet2 = prepareStatement2.executeQuery();
 					while(resultSet2.next())
@@ -193,7 +175,7 @@ public class CustomerDAO {
 							flag = 1;
 					}
 				}
-//				System.out.println(resultSet.getInt(1));
+
 				if(flag!=1)
 				{
 					Rental rent = new Rental();
@@ -229,7 +211,6 @@ public class CustomerDAO {
 			while(resultSet.next())
 			{
 				Rental rent = new Rental();
-				//logger.log(Level.INFO,"\nHOUSE_ID:"+resultSet.getInt(1)+"\nADDRESS:"+resultSet.getString(2)+"\nAREA:"+resultSet.getString(3)+"\nZIPCODE:"+resultSet.getInt(4)+"\nTYPE:"+resultSet.getString(5)+"\nPRICE:"+resultSet.getInt(6));
 				
 				rent.setHouseid(resultSet.getInt(1));
 				rent.setRentaddress(resultSet.getString(2));
@@ -306,7 +287,7 @@ public class CustomerDAO {
 			while(resultSet.next())
 			{
 				Rental rent = new Rental();
-				//logger.log(Level.INFO,"\nRating:"+resultSet.getInt(1)+"\nReview:"+resultSet.getString(2));
+				
 				System.out.println(resultSet.getString(1));
 				rent.setFname(resultSet.getString(1));
 				rent.setRating(resultSet.getFloat(2));
@@ -396,7 +377,7 @@ public class CustomerDAO {
 			int userId = 0;
 			int houseId = 0;
 			int flag = 0;
-			prepareStatement = connection.prepareStatement("SELECT USER_RENTAL_INTEREST.USER_ID,USER_RENTAL_INTEREST.HOUSE_ID FROM USER_RENTAL_INTEREST,USER WHERE USER.EMAIL = ? AND USER.USER_ID = USER_RENTAL_INTEREST.USER_ID AND USER_RENTAL_INTEREST.HOUSE_ID = ?");
+			prepareStatement = connection.prepareStatement(SqlConstant.CHECK_INTEREST);
 			prepareStatement.setString(1, rental.getEmail());
 			prepareStatement.setInt(2, rental.getHouseid());
 			resultSet = prepareStatement.executeQuery();
@@ -438,7 +419,7 @@ public class CustomerDAO {
 					userId = resultSet.getInt(1);
 					name = resultSet.getString(3);
 				}
-			System.out.println(userId);
+			
 			prepareStatement = connection.prepareStatement(SqlConstant.RETRIEVE_USER_INTEREST_STATUS);
 			prepareStatement.setInt(1, rental.getHouseid());
 			resultSet = prepareStatement.executeQuery();
@@ -451,19 +432,17 @@ public class CustomerDAO {
 				else
 					flag = 1;
 			}
-			/*if(flag!=1)
-			{*/
-				System.out.println(userId);
-				prepareStatement = connection.prepareStatement(SqlConstant.INSERT_USER_INTEREST);
-				prepareStatement.setInt(1, rental.getHouseid());
-				prepareStatement.setInt(2, userId);
-				prepareStatement.setInt(3,rental.getReqpay());
-				prepareStatement.setInt(4, 1);
-				prepareStatement.setString(5, name);
-				prepareStatement.setString(6, name);
-				prepareStatement.executeUpdate();
-				counter = 1;
-				//logger.log(Level.INFO, "Number of rows affected: " + cnt);
+		
+			prepareStatement = connection.prepareStatement(SqlConstant.INSERT_USER_INTEREST);
+			prepareStatement.setInt(1, rental.getHouseid());
+			prepareStatement.setInt(2, userId);
+			prepareStatement.setInt(3,rental.getReqpay());
+			prepareStatement.setInt(4, 1);
+			prepareStatement.setString(5, name);
+			prepareStatement.setString(6, name);
+			prepareStatement.executeUpdate();
+			counter = 1;
+				
 			
 			return counter;
 			
@@ -513,35 +492,7 @@ public class CustomerDAO {
 			
 			connection = DBUtils.getConnection();
 			String name="";
-			/*int addressId = 0;
-			int houseId = 0;
-			int statusId = 0;*/
-			/*
-			prepareStatement = connection.prepareStatement(SqlConstant.SELECT_RENT_ADDRESS);
-			prepareStatement.setString(1, rental.getRentaddress());
-			resultSet = prepareStatement.executeQuery();
-			if(resultSet.next())
-				if(resultSet.getString(2).equalsIgnoreCase(rental.getRentaddress()))
-				{
-					String id = resultSet.getString(1);
-					addressId = Integer.parseInt(id);
-				}
 			
-			
-			prepareStatement = connection.prepareStatement(SqlConstant.SELECT_RENTALADD_ID);
-			prepareStatement.setInt(1,addressId);
-			resultSet = prepareStatement.executeQuery();
-			if(resultSet.next())
-				if(resultSet.getString(5).equals(String.valueOf(addressId)))
-				{
-					houseId = resultSet.getInt(1);
-					statusId = resultSet.getInt(6);
-					
-				}
-		
-			if(statusId==2)
-			{
-			*/
 			prepareStatement = connection.prepareStatement(SqlConstant.RETRIEVE_EMAIL);
 			prepareStatement.setString(1, rental.getEmail());
 			resultSet = prepareStatement.executeQuery();
@@ -556,12 +507,11 @@ public class CustomerDAO {
 			prepareStatement = connection.prepareStatement(SqlConstant.INSERT_REVIEW);
 			prepareStatement.setInt(1, userId);
 			prepareStatement.setInt(2, rental.getHouseid());
-			prepareStatement.setFloat(3, rental.getRating());
+			prepareStatement.setDouble(3, rental.getRating());
 			prepareStatement.setString(4, rental.getReview());
 			prepareStatement.setString(5, name);
 			prepareStatement.setString(6, name);
 			prepareStatement.executeUpdate();
-			//logger.log(Level.INFO, "Number of rows affected: " + cnt);
 			
 			
 		}catch(SQLException e)
@@ -580,7 +530,7 @@ public class CustomerDAO {
 			int userId = 0;
 			int houseId = 0;
 			int flag = 0;
-			prepareStatement = connection.prepareStatement("SELECT DISTINCT USER_REVIEW.USER_ID,USER_REVIEW.HOUSE_ID FROM USER_REVIEW,USER WHERE USER.EMAIL = ? AND HOUSE_ID = ? AND USER_REVIEW.USER_ID = USER.USER_ID");
+			prepareStatement = connection.prepareStatement(SqlConstant.CHECK_REVIEW_RATING);
 			prepareStatement.setString(1, rental.getEmail());
 			prepareStatement.setInt(2, rental.getHouseid());
 			resultSet = prepareStatement.executeQuery();
@@ -609,7 +559,7 @@ public class CustomerDAO {
 		try {
 			ArrayList<Rental> approvedHouseList = new ArrayList<Rental>();
 			connection = DBUtils.getConnection();
-			prepareStatement = connection.prepareStatement("SELECT distinct USER_RENTAL_INTEREST.HOUSE_ID,ADDRESS,AREA,TYPE,PRICE,STATUS FROM USER_RENTAL_INTEREST,USER,RENTAL_DETAILS,ADDRESS,AREA,HOUSE_TYPE,RENTAL_STATUS WHERE USER.EMAIL = ? AND USER.USER_ID = USER_RENTAL_INTEREST.USER_ID AND USER_RENTAL_INTEREST.HOUSE_ID = RENTAL_DETAILS.HOUSE_ID AND RENTAL_DETAILS.ADDRESS_ID = ADDRESS.ADDRESS_ID AND ADDRESS.AREA_ID = AREA.AREA_ID AND HOUSE_TYPE.TYPE_ID = RENTAL_DETAILS.TYPE_ID AND USER_RENTAL_INTEREST.STATUS_ID = 2 AND USER_RENTAL_INTEREST.STATUS_ID = RENTAL_STATUS.STATUS_ID");
+			prepareStatement = connection.prepareStatement(SqlConstant.VIEW_APPROVED_HOUSE);
 			prepareStatement.setString(1,rental.getEmail());
 			resultSet = prepareStatement.executeQuery();
 			if(resultSet.next())
@@ -639,7 +589,7 @@ public class CustomerDAO {
 		ArrayList<Rental> userStatusList = new ArrayList<Rental>();
 		try {
 			connection = DBUtils.getConnection();
-			prepareStatement = connection.prepareStatement("SELECT distinct USER_RENTAL_INTEREST.HOUSE_ID,ADDRESS,AREA,TYPE,PRICE,STATUS FROM USER_RENTAL_INTEREST,USER,RENTAL_DETAILS,ADDRESS,AREA,HOUSE_TYPE,RENTAL_STATUS WHERE USER.EMAIL = ? AND USER.USER_ID = USER_RENTAL_INTEREST.USER_ID AND USER_RENTAL_INTEREST.HOUSE_ID = RENTAL_DETAILS.HOUSE_ID AND RENTAL_DETAILS.ADDRESS_ID = ADDRESS.ADDRESS_ID AND ADDRESS.AREA_ID = AREA.AREA_ID AND HOUSE_TYPE.TYPE_ID = RENTAL_DETAILS.TYPE_ID AND RENTAL_STATUS.STATUS_ID = USER_RENTAL_INTEREST.STATUS_ID");
+			prepareStatement = connection.prepareStatement(SqlConstant.VIEW_USER_STATUS);
 			prepareStatement.setString(1, rental.getEmail());
 			resultSet = prepareStatement.executeQuery();
 			while(resultSet.next())
@@ -669,20 +619,20 @@ public class CustomerDAO {
 			int userId = 0;
 			int houseId = 0;
 			
-			prepareStatement = connection.prepareStatement("SELECT USER_ID FROM USER WHERE EMAIL = ?");
+			prepareStatement = connection.prepareStatement(SqlConstant.SELECT_USERID);
 			prepareStatement.setString(1,rental.getEmail());
 			resultSet = prepareStatement.executeQuery();
 			if(resultSet.next())
 			{
 				userId = resultSet.getInt(1);
 			}
-			System.out.println(userId);
-			prepareStatement = connection.prepareStatement("UPDATE USER_RENTAL_INTEREST SET STATUS_ID = 4 WHERE HOUSE_ID = ? AND USER_ID = ?");
+			
+			prepareStatement = connection.prepareStatement(SqlConstant.UPDATE_CONFIRMED_STATUS);
 			prepareStatement.setInt(1,rental.getHouseid());
 			prepareStatement.setInt(2, userId);
 			prepareStatement.executeUpdate();
-			System.out.println(rental.getHouseid());
-			prepareStatement = connection.prepareStatement("SELECT USER_RENTAL_INTEREST.USER_ID,USER_RENTAL_INTEREST.HOUSE_ID FROM USER_RENTAL_INTEREST,USER WHERE HOUSE_ID = ? AND USER.EMAIL = ? AND USER.USER_ID = USER_RENTAL_INTEREST.USER_ID");
+			
+			prepareStatement = connection.prepareStatement(SqlConstant.RETRIVE_USER_HOUSE_ID);
 			prepareStatement.setInt(1,rental.getHouseid());
 			prepareStatement.setString(2,rental.getEmail());
 			resultSet = prepareStatement.executeQuery();
@@ -691,13 +641,12 @@ public class CustomerDAO {
 				userId = resultSet.getInt(1);
 				houseId = resultSet.getInt(2);
 			}
-			System.out.println(userId);
-			System.out.println(houseId);
-			prepareStatement = connection.prepareStatement("UPDATE USER_RENTAL_INTEREST SET STATUS_ID = 3 WHERE USER_ID = ? AND STATUS_ID != 4");
+			
+			prepareStatement = connection.prepareStatement(SqlConstant.UPDATE_USER_REJECTED);
 			prepareStatement.setInt(1, userId);
 			prepareStatement.executeUpdate();
 			
-			prepareStatement = connection.prepareStatement("UPDATE USER_RENTAL_INTEREST SET STATUS_ID = 3 WHERE HOUSE_ID = ? AND STATUS_ID != 4");
+			prepareStatement = connection.prepareStatement(SqlConstant.UPDATE_HOUSE_REJECTED);
 			prepareStatement.setInt(1, houseId);
 			prepareStatement.executeUpdate();
 		}catch(SQLException e)

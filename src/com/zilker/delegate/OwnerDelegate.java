@@ -86,21 +86,6 @@ public class OwnerDelegate {
 		return flag;
 	}
 	
-	/*public int updateRentChoice(Rental rental)throws SQLException
-	{
-		int flag = 0;
-		try {
-			
-			RentalDAO rentalDao = new RentalDAO();
-			flag =rentalDao.updateRentChoice(rental);
-			
-		}catch(SQLException e)
-		{
-			throw e;
-		}
-		return flag;
-	}
-	*/
 	public int updateRentAddress(Rental rental)throws SQLException
 	{
 		int flag = 0;
@@ -165,10 +150,7 @@ public class OwnerDelegate {
 			throw e;
 		}
 	}
-	/*
-	 * This method allows owner to accept user 
-	 * requested house
-	 */
+	
 	public int checkAcceptedRequest(Rental rental)throws SQLException
 	{
 		try {
@@ -182,7 +164,10 @@ public class OwnerDelegate {
 			throw e;
 		}
 	}
-	
+	/*
+	 * This method allows owner to accept user 
+	 * requested house
+	 */
 	public void acceptUserRequest(Rental rental)throws SQLException
 	{
 		try {

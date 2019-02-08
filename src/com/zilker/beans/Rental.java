@@ -4,10 +4,8 @@ public class Rental {
 	
 	String housetype,rentchoice, rentarea, rentaddress, email,facility, newrentaddress,review, status, landmark, pgSharing, gender, fname;
 	int price, zipcode, houseid, reqpay, userid, builtSqFeet, totalFloor, floorNo, deposit, statusId;
-	double latitude, longitude;
-	long phoneno;
-	float rating;
-	
+	double latitude, longitude, rating;
+	long phoneno;	
 	
 	
 	public int getStatusId() {
@@ -100,10 +98,10 @@ public class Rental {
 	public void setReview(String review) {
 		this.review = review;
 	}
-	public float getRating() {
+	public double getRating() {
 		return rating;
 	}
-	public void setRating(float rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 	public String getNewrentaddress() {
